@@ -1,0 +1,50 @@
+---
+- name: Configure nginx
+  hosts: datacenter
+  become: True # sodo is depraciated in 2.0 version
+  tasks:
+    - name: install nginx
+      yum:
+        name: nginx 
+        update_cache: yes
+        state: installed
+    - name: create nginx sites-available directory
+      file:
+        path: /etc/nginx/sites-available/
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+    - name: create available default config
+      template:
+        dest: /etc/nginx/sites-available/default
+        src: files/default
+        owner: root
+        group: root
+        mode: 0640
+    - name: create /etc/nginx/sites-enabled
+      file:
+        dest: /etc/nginx/sites-enabled
+        owner: root
+        group: root
+        mode: 0755
+        state: directory
+    - name: cretae symlink
+      file:
+        dest: /home/vagrant/pliczek
+        src: /etc/nginx/sites-available/default
+        owner: root
+        group: root
+        state: link
+
+    - name: copy index.html
+      template:
+        src: files/index.html 
+        dest: /usr/share/nginx/html/index.html
+        mode: 0664
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+        
+# looknac czy widac stronke aewntualnie sprawidzc port 8080

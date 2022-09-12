@@ -1,0 +1,12 @@
+---
+- name: My first play
+  hosts: datacenter
+  tasks:
+    - name: Ping machines
+      ansible.builtin.ping:
+    - name: Debugging
+      ansible.builtin.debug:
+        msg: Helloooo swiecie!
+        
+    
+        

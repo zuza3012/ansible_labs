@@ -1,0 +1,16 @@
+---
+- name: Fix centos 8 repo
+  hosts: datacenter
+  become: True # sodo is depraciated in 2.0 version
+  tasks:
+    - name: rename files
+      shell:
+        cmd:  | # | powoduje takie cos: command1 \n command2 .. # a > robi laczenie : command1 command2 \n
+          sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+          sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+
+      args:
+        executable: /bin/bash     
+
+
+

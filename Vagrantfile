@@ -14,7 +14,8 @@ Vagrant.configure("2") do |config|
     config.vm.define "machine#{machine_id}" do |machine|
       machine.vm.hostname = "machine#{machine_id}"
       machine.vm.network "public_network", ip: "10.88.0.#{20+machine_id}", bridge: "enp2s0"
-
+      config.vm.network "forwarded_port", guest: 80, host: 8080, id: "nginx"
+      
       # Only execute once the Ansible provisioner,
       # when all the machines are up and ready.
       if machine_id == N
