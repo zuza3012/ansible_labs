@@ -1,6 +1,6 @@
 ---
 - name: Configure nginx
-  hosts: datacenter
+  hosts: worker_nodes
   become: True # sodo is depraciated in 2.0 version
   tasks:
     - name: install nginx
@@ -8,6 +8,7 @@
         name: nginx 
         update_cache: yes
         state: installed
+
     - name: create nginx sites-available directory
       file:
         path: /etc/nginx/sites-available/
@@ -42,9 +43,30 @@
         src: files/index.html 
         dest: /usr/share/nginx/html/index.html
         mode: 0664
+    
     - name: restart nginx
       service:
         name: nginx
         state: restarted
-        
-# looknac czy widac stronke aewntualnie sprawidzc port 8080
+        enabled: yes
+      notify:
+      - Print info
+      - Create empty file
+    - name: printing line
+      debug:
+        msg: "{{ test_me }}"
+      
+
+  # handler jest wykonywany raz nawet jak duzo razy zostanie powiaodomiony by sie wykonal      
+  handlers:
+    - name: Print info
+      debug:
+        msg: 'AHAHAH'
+    - name: Create empty file
+      file:
+        path: /home/vagrant/test_me
+        owner: root
+        group: root
+        mode: '0644'
+        state: touch
+
