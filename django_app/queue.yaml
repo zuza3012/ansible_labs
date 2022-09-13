@@ -1,0 +1,5 @@
+---
+# file: queue.yml
+- hosts: queue
+  roles:
+    - role1

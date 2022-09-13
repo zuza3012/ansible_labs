@@ -1,0 +1,5 @@
+---
+# file: webservers.yml
+- hosts: dbs
+  roles:
+    - role1
